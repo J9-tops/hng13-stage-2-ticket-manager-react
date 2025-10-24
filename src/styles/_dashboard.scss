@@ -461,4 +461,73 @@
       font-size: 2.5rem;
     }
   }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    background-color: #ffffff;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    color: #9ca3af;
+  }
+
+  .empty-state h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .empty-state p {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    background-color: #1173d4;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-primary:hover {
+    background-color: rgba(17, 115, 212, 0.9);
+  }
+}
+
+.btn-delete {
+  height: 3rem;
+  padding: 0 1rem;
+  width: 100%;
+  background-color: #dc2626;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #b91c1c;
 }

@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useModalStore } from "../store";
 
 export default function DashboardHeader() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigate = useNavigate();
-  const logout = () => {
-    localStorage.removeItem("current_user");
-    navigate("/sign-in");
-  };
+
+  const { updateModal } = useModalStore();
+
+  const openLogoutModal = () =>
+    updateModal({
+      modalType: "logout",
+      status: "open",
+    });
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -61,7 +65,7 @@ export default function DashboardHeader() {
           </NavLink>
         </nav>
         <div className="nav-buttons">
-          <button className="btn-primary" onClick={logout}>
+          <button className="btn-primary" onClick={openLogoutModal}>
             Logout
           </button>
           <button className="menu-btn" onClick={toggleSidebar}>
@@ -112,7 +116,7 @@ export default function DashboardHeader() {
             >
               Manage Tickets
             </NavLink>
-            <button className="sidebar-logout" onClick={logout}>
+            <button className="sidebar-logout" onClick={openLogoutModal}>
               Logout
             </button>
           </nav>

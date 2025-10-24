@@ -146,7 +146,7 @@ export default function ManageTickets() {
 
   return (
     <div className="app-container tickets">
-      <div>
+      <div style={{ width: "100%" }}>
         <div className="page-header">
           <div>
             <h1 className="page-title">Tickets</h1>
@@ -285,7 +285,7 @@ export default function ManageTickets() {
               </p>
               <button onClick={openCreateTicket} className="btn-primary">
                 <span className="icon">add</span>
-                <span>Create First Ticket</span>
+                <span>Create Ticket</span>
               </button>
             </div>
           )}

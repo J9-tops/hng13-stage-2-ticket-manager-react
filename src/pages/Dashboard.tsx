@@ -1,40 +1,91 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useModalStore } from "../store";
 import type { Ticket } from "../types";
 
 const Dashboard: React.FC = () => {
-  const tickets: Partial<Ticket>[] = [
-    {
-      id: "#TKT-001",
-      description: "Login Issue",
-      status: "Open",
-      lastUpdated: "2 hours ago",
-    },
-    {
-      id: "#TKT-002",
-      description: "Feature Request: Dark Mode",
-      status: "Resolved",
-      lastUpdated: "5 hours ago",
-    },
-    {
-      id: "#TKT-003",
-      description: "Billing Inquiry",
-      status: "In Progress",
-      lastUpdated: "1 day ago",
-    },
-    {
-      id: "#TKT-004",
-      description: "Unable to upload attachment",
-      status: "Resolved",
-      lastUpdated: "2 days ago",
-    },
-  ];
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const { updateModal } = useModalStore();
+  const openCreateTicket = () =>
+    updateModal({ modalType: "create", status: "open" });
+  useEffect(() => {
+    const loadTickets = () => {
+      const saved = localStorage.getItem("tickets");
+      if (saved) {
+        try {
+          const parsedTickets = JSON.parse(saved);
+          setTickets(parsedTickets);
+        } catch (error) {
+          console.error("Error parsing tickets:", error);
+          setTickets([]);
+        }
+      }
+    };
 
-  const getStatusClass = (status?: string) => {
+    loadTickets();
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "tickets") {
+        loadTickets();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    const handleTicketsUpdate = () => loadTickets();
+    window.addEventListener("ticketsUpdated", handleTicketsUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("ticketsUpdated", handleTicketsUpdate);
+    };
+  }, []);
+
+  // Calculate statistics
+  const stats = useMemo(() => {
+    const total = tickets.length;
+    const open = tickets.filter((t) => t.status === "Open").length;
+    const closed = tickets.filter((t) => t.status === "Closed").length;
+
+    return { total, open, closed };
+  }, [tickets]);
+
+  // Get recent tickets (last 4, sorted by lastUpdated)
+  const recentTickets = useMemo(() => {
+    return [...tickets]
+      .sort((a, b) => {
+        const dateA = new Date(a.lastUpdated).getTime();
+        const dateB = new Date(b.lastUpdated).getTime();
+        return dateB - dateA;
+      })
+      .slice(0, 4);
+  }, [tickets]);
+
+  // Format relative time
+  const getRelativeTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 60) {
+      return diffMins <= 1 ? "Just now" : `${diffMins} minutes ago`;
+    } else if (diffHours < 24) {
+      return diffHours === 1 ? "1 hour ago" : `${diffHours} hours ago`;
+    } else if (diffDays < 7) {
+      return diffDays === 1 ? "1 day ago" : `${diffDays} days ago`;
+    } else {
+      return date.toLocaleDateString();
+    }
+  };
+
+  const getStatusClass = (status: string) => {
     switch (status) {
       case "Open":
         return "status-open";
-      case "Resolved":
-        return "status-resolved";
+      case "Closed":
+        return "status-closed";
       case "In Progress":
         return "status-progress";
       default:
@@ -61,7 +112,7 @@ const Dashboard: React.FC = () => {
                   🎫
                 </span>
               </div>
-              <p className="stat-value">1,250</p>
+              <p className="stat-value">{stats.total}</p>
             </div>
 
             <div className="stat-card">
@@ -69,57 +120,71 @@ const Dashboard: React.FC = () => {
                 <p className="stat-label">Open Tickets</p>
                 <span className="stat-icon stat-warning">📂</span>
               </div>
-              <p className="stat-value stat-warning">150</p>
+              <p className="stat-value stat-warning">{stats.open}</p>
             </div>
 
             <div className="stat-card">
               <div className="stat-header">
-                <p className="stat-label">Resolved Tickets</p>
+                <p className="stat-label">Closed Tickets</p>
                 <span className="stat-icon stat-success">✓</span>
               </div>
-              <p className="stat-value stat-success">1,100</p>
+              <p className="stat-value stat-success">{stats.closed}</p>
             </div>
           </div>
 
           <div className="activity-section">
             <h3 className="section-title">Recent Activity</h3>
             <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Ticket ID</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Last Updated</th>
-                    <th scope="col">
-                      <span className="sr-only">View</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tickets.map((ticket) => (
-                    <tr key={ticket.id}>
-                      <td className="ticket-id">{ticket.id}</td>
-                      <td className="ticket-subject">{ticket.description}</td>
-                      <td>
-                        <span
-                          className={`status-badge ${getStatusClass(
-                            ticket.status
-                          )}`}
-                        >
-                          {ticket.status}
-                        </span>
-                      </td>
-                      <td className="ticket-subject">{ticket.lastUpdated}</td>
-                      <td style={{ textAlign: "right" }}>
-                        <a className="view-link" href="#">
-                          View
-                        </a>
-                      </td>
+              {recentTickets.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Ticket ID</th>
+                      <th scope="col">Subject</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Last Updated</th>
+                      <th scope="col">
+                        <span className="sr-only">View</span>
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {recentTickets.map((ticket) => (
+                      <tr key={ticket.id}>
+                        <td className="ticket-id">{ticket.uniqueNo}</td>
+                        <td className="ticket-subject">{ticket.title}</td>
+                        <td>
+                          <span
+                            className={`status-badge ${getStatusClass(
+                              ticket.status
+                            )}`}
+                          >
+                            {ticket.status}
+                          </span>
+                        </td>
+                        <td className="ticket-subject">
+                          {getRelativeTime(ticket.lastUpdated)}
+                        </td>
+                        <td style={{ textAlign: "right" }}>
+                          <a className="view-link" href="#">
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty-state">
+                  <span className="icon empty-icon">inbox</span>
+                  <h3>No Tickets Found</h3>
+                  <p>Create a new ticket.</p>
+                  <button onClick={openCreateTicket} className="btn-primary">
+                    <span className="icon">add</span>
+                    <span>Create First Ticket</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { RouteObject } from "react-router-dom";
 import DashboardLayout from "./components/shared/DashboardLayout";
 import NotFound from "./components/shared/NotFound";
+import ProtectedRoute from "./components/shared/ProtectedRoute";
 import Layout from "./Layout";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
@@ -27,15 +28,21 @@ export const routes: RouteObject[] = [
       },
       {
         path: "dashboard",
-        element: <DashboardLayout />,
+        element: <ProtectedRoute />,
         children: [
           {
-            index: true,
-            element: <Dashboard />,
-          },
-          {
-            path: "tickets",
-            element: <ManageTickets />,
+            path: "",
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <Dashboard />,
+              },
+              {
+                path: "tickets",
+                element: <ManageTickets />,
+              },
+            ],
           },
         ],
       },

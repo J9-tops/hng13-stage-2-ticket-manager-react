@@ -1,6 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { AuthFormErrors, AuthInFormData } from "../types";
 import { validateSignIn } from "../utils";
@@ -16,6 +16,11 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
+
+  const currentUser = localStorage.getItem("current_user");
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -58,20 +63,30 @@ export default function SignUp() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const JSONFormData = JSON.stringify(formData);
-      const userExists = localStorage.getItem("current_user");
+      const usersJSON = localStorage.getItem("users");
+      const users = usersJSON ? JSON.parse(usersJSON) : [];
 
-      if (!userExists) {
-        localStorage.setItem("current_user", JSONFormData);
-        toast.success("Account Creation Successfull");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 500);
-      } else {
-        toast.error("Account already exists, please proceed to sign in");
+      const emailExists = users.some(
+        (user: AuthInFormData) => user.email === formData.email
+      );
+
+      if (emailExists) {
+        toast.error("Email already registered. Please sign in.");
+        setErrors({ email: "This email is already registered" });
+        return;
       }
+
+      users.push(formData);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      localStorage.setItem("current_user", JSON.stringify(formData));
+
+      toast.success("Account Created Successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     } else {
-      toast.error("Failed to sign in");
+      toast.error("Please fix the form errors");
     }
   };
 
@@ -80,7 +95,7 @@ export default function SignUp() {
       <div className="page-content">
         <div className="form-wrapper">
           <div className="signin-card">
-            <div className="logo-section">
+            <Link to="/" className="logo-section">
               <div className="logo-icon">
                 <svg
                   fill="none"
@@ -96,7 +111,7 @@ export default function SignUp() {
                 </svg>
               </div>
               <h2 className="logo-text">TicketFlow</h2>
-            </div>
+            </Link>
 
             <h1 className="page-title">Create Your Account</h1>
 
@@ -150,7 +165,7 @@ export default function SignUp() {
             </form>
 
             <p className="footer-text">
-              Don&apos;t have an account?
+              Already have an account?
               <Link to="/sign-in" className="footer-link">
                 Sign In
               </Link>

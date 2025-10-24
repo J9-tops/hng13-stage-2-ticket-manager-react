@@ -1,6 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { AuthFormErrors, AuthInFormData } from "../types";
 import { validateSignIn } from "../utils";
@@ -16,6 +16,11 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
+
+  const currentUser = localStorage.getItem("current_user");
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -58,20 +63,25 @@ export default function SignIn() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const JSONFormData = JSON.stringify(formData);
-      const userExists = localStorage.getItem("current_user");
+      const usersJSON = localStorage.getItem("users");
+      const users = usersJSON ? JSON.parse(usersJSON) : [];
 
-      if (!userExists) {
-        localStorage.setItem("current_user", JSONFormData);
-        toast.success("Signing in successfull, Redirecting...");
+      const user = users.find(
+        (u: AuthInFormData) =>
+          u.email === formData.email && u.password === formData.password
+      );
+
+      if (user) {
+        localStorage.setItem("current_user", JSON.stringify(user));
+        toast.success("Signing in successful, Redirecting...");
         setTimeout(() => {
           navigate("/dashboard");
         }, 500);
       } else {
-        toast.error("Already Logged in");
+        toast.error("User does not exist");
       }
     } else {
-      toast.error("Failed to sign in");
+      toast.error("Please fix the form errors");
     }
   };
 
@@ -80,7 +90,7 @@ export default function SignIn() {
       <div className="page-content">
         <div className="form-wrapper">
           <div className="signin-card">
-            <div className="logo-section">
+            <Link to="/" className="logo-section">
               <div className="logo-icon">
                 <svg
                   fill="none"
@@ -96,7 +106,7 @@ export default function SignIn() {
                 </svg>
               </div>
               <h2 className="logo-text">TicketFlow</h2>
-            </div>
+            </Link>
             <div>
               <h1 className="page-title">Welcome Back</h1>
               <p>Sign in to continue to your dashboard</p>
