@@ -2,7 +2,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import "../styles/sign-in.css";
 import type { AuthFormErrors, AuthInFormData } from "../types";
 import { validateSignIn } from "../utils";
 
@@ -77,7 +76,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="page-container">
+    <div className="auth page-container">
       <div className="page-content">
         <div className="form-wrapper">
           <div className="signin-card">

@@ -14,7 +14,7 @@ const ErrorPage: React.FC<ErrorProps> = ({ error, reset }) => {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="error flex min-h-screen flex-col">
       <Header />
       <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-6 text-center">
         <div className="max-w-80">

@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../styles/error.css";
 import ErrorSVG from "../ui/ErrorSVG";
 import Header from "./Header";
 
 const NotFound: React.FC = () => {
   return (
-    <div className="not-found-container">
+    <div className="error not-found-container">
       <Header />
       <main className="not-found-main">
         <div className="error-svg-wrapper">

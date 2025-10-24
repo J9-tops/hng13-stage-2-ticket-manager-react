@@ -1,25 +1,11 @@
+@use "reset";
+@use "variables";
+@use "landing-page";
+@use "error";
+@use "dashboard";
+
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
-}
-
-button {
-  border: none;
-  background: transparent;
-}
-
-ul,
-ol {
-  list-style-type: none;
-}
 
 body {
   font-family: "Manrope", sans-serif, -apple-system, BlinkMacSystemFont,
@@ -35,8 +21,8 @@ body {
   min-width: 120px;
   height: 3rem;
   padding: 0 1.25rem;
-  background-color: var(--primary);
-  color: var(--white);
+  background-color: $primary;
+  color: $white;
   font-size: 1rem;
   font-weight: 700;
   border: none;
@@ -57,7 +43,7 @@ body {
   min-width: 120px;
   height: 3rem;
   padding: 0 1.25rem;
-  background-color: var(--slate-200);
+  background-color: $slate-200;
   color: #0d171b;
   font-size: 1rem;
   font-weight: 700;
@@ -73,4 +59,4 @@ body {
 
 .btn-secondary:hover {
   background-color: #cbd5e1;
-} /*# sourceMappingURL=index.css.map */
+}

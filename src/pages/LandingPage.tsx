@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/shared/Footer";
 import Header from "../components/shared/Header";
-import "../styles/landing-page.css";
 
 const LandingPage = () => {
   return (

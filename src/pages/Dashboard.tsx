@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/dashboard.css";
 import type { Ticket } from "../types";
 
 const Dashboard: React.FC = () => {
