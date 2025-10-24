@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 .error {
   .container {
     display: flex;
@@ -14,6 +16,134 @@
     justify-content: center;
     padding: 1.5rem;
     text-align: center;
+  }
+
+  .header {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    margin: 0 auto;
+    max-width: 1440px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .header {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .header {
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .logo-icon {
+    width: 2rem;
+    height: 2rem;
+    color: $primary;
+  }
+
+  .logo-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d171b;
+  }
+
+  .dark .logo-text {
+    color: $slate-50;
+  }
+
+  .nav-buttons {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .nav-buttons {
+      display: flex;
+    }
+  }
+
+  .btn-login {
+    min-width: 84px;
+    height: 2.5rem;
+    padding: 0 1rem;
+    background-color: rgba(19, 164, 236, 0.2);
+    color: $primary;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .btn-login:hover {
+    background-color: rgba(19, 164, 236, 0.3);
+  }
+
+  .btn-get-started {
+    min-width: 84px;
+    height: 2.5rem;
+    padding: 0 1rem;
+    background-color: $primary;
+    color: $white;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .btn-get-started:hover {
+    background-color: rgba(19, 164, 236, 0.9);
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-menu {
+      display: none;
+    }
+  }
+
+  .menu-icon {
+    background: none;
+    border: none;
+    color: #0d171b;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .dark .menu-icon {
+    color: $slate-50;
   }
 
   .error-svg-container {
