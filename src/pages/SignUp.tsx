@@ -2,11 +2,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import "../../styles/sign-in.css";
-import type { AuthFormErrors, AuthInFormData } from "../../types";
-import { validateSignIn } from "../../utils";
+import "../styles/sign-in.css";
+import type { AuthFormErrors, AuthInFormData } from "../types";
+import { validateSignIn } from "../utils";
 
-export default function SignIn() {
+export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<AuthInFormData>({
@@ -64,12 +64,12 @@ export default function SignIn() {
 
       if (!userExists) {
         localStorage.setItem("current_user", JSONFormData);
-        toast.success("Signing in successfull, Redirecting...");
+        toast.success("Account Creation Successfull");
         setTimeout(() => {
           navigate("/dashboard");
         }, 500);
       } else {
-        toast.error("Already Logged in");
+        toast.error("Account already exists, please proceed to sign in");
       }
     } else {
       toast.error("Failed to sign in");
@@ -98,10 +98,8 @@ export default function SignIn() {
               </div>
               <h2 className="logo-text">TicketFlow</h2>
             </div>
-            <div>
-              <h1 className="page-title">Welcome Back</h1>
-              <p>Sign in to continue to your dashboard</p>
-            </div>
+
+            <h1 className="page-title">Create Your Account</h1>
 
             <form className="form-section" onSubmit={handleSubmit} noValidate>
               <label className="form-label">
@@ -148,14 +146,14 @@ export default function SignIn() {
               </label>
 
               <button type="submit" className="signin-button">
-                Sign In
+                Sign Up
               </button>
             </form>
 
             <p className="footer-text">
               Don&apos;t have an account?
-              <Link to="/sign-up" className="footer-link">
-                Sign Up
+              <Link to="/sign-in" className="footer-link">
+                Sign In
               </Link>
             </p>
           </div>
