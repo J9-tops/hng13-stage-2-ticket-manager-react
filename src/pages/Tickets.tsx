@@ -145,7 +145,7 @@ export default function ManageTickets() {
   }, [openDropdown]);
 
   return (
-    <div className="app-container">
+    <div className="app-container tickets">
       <div>
         <div className="page-header">
           <div>
