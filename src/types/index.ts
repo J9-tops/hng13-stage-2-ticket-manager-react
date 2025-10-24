@@ -10,7 +10,27 @@ export type AuthFormErrors = {
 
 export interface Ticket {
   id: string;
-  subject: string;
-  status: "Open" | "Resolved" | "In Progress";
+  uniqueNo: string;
+  title: string;
+  description: string;
+  status: "Open" | "In Progress" | "Resolved";
+  assignee: string;
+  priority: "Low" | "Medium" | "High";
+  date: string;
+  avatar: string;
   lastUpdated: string;
+}
+
+export interface TicketFormErrors {
+  title?: string;
+  description?: string;
+  assignee?: string;
+  priority?: string;
+}
+
+export interface TicketFormData {
+  title: string;
+  description: string;
+  assignee: string;
+  priority: "Low" | "Medium" | "High";
 }

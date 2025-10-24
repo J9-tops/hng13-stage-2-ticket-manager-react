@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import ManageTickets from "./pages/Tickets";
 
 export const routes: RouteObject[] = [
   {
@@ -31,6 +32,10 @@ export const routes: RouteObject[] = [
           {
             index: true,
             element: <Dashboard />,
+          },
+          {
+            path: "tickets",
+            element: <ManageTickets />,
           },
         ],
       },

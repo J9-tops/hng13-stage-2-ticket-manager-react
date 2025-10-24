@@ -110,6 +110,9 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-login:hover {
@@ -128,6 +131,9 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-get-started:hover {

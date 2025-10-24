@@ -2,34 +2,34 @@ import React from "react";
 import type { Ticket } from "../types";
 
 const Dashboard: React.FC = () => {
-  const tickets: Ticket[] = [
+  const tickets: Partial<Ticket>[] = [
     {
       id: "#TKT-001",
-      subject: "Login Issue",
+      description: "Login Issue",
       status: "Open",
       lastUpdated: "2 hours ago",
     },
     {
       id: "#TKT-002",
-      subject: "Feature Request: Dark Mode",
+      description: "Feature Request: Dark Mode",
       status: "Resolved",
       lastUpdated: "5 hours ago",
     },
     {
       id: "#TKT-003",
-      subject: "Billing Inquiry",
+      description: "Billing Inquiry",
       status: "In Progress",
       lastUpdated: "1 day ago",
     },
     {
       id: "#TKT-004",
-      subject: "Unable to upload attachment",
+      description: "Unable to upload attachment",
       status: "Resolved",
       lastUpdated: "2 days ago",
     },
   ];
 
-  const getStatusClass = (status: string) => {
+  const getStatusClass = (status?: string) => {
     switch (status) {
       case "Open":
         return "status-open";
@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
                   {tickets.map((ticket) => (
                     <tr key={ticket.id}>
                       <td className="ticket-id">{ticket.id}</td>
-                      <td className="ticket-subject">{ticket.subject}</td>
+                      <td className="ticket-subject">{ticket.description}</td>
                       <td>
                         <span
                           className={`status-badge ${getStatusClass(
