@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useModalStore } from "../../store";
 import type { Ticket, TicketFormData, TicketFormErrors } from "../../types";
@@ -10,10 +11,12 @@ export default function CreateModal() {
     description: "",
     assignee: "Jane Smith",
     priority: "Low",
+    status: "Open",
   });
 
   const [errors, setErrors] = useState<TicketFormErrors>({});
   const { updateModal } = useModalStore();
+  const navigate = useNavigate();
 
   const closeModal = () =>
     updateModal({ modalType: "create", status: "close" });
@@ -73,6 +76,10 @@ export default function CreateModal() {
           JSON.stringify([...storedTickets, newTicket])
         );
         toast.success("Ticket created successfully!");
+        setTimeout(() => {
+          closeModal();
+          navigate(0);
+        }, 1000);
       } catch (err) {
         console.error("Error saving ticket:", err);
         toast.error("Failed to save ticket. Please try again.");
@@ -84,6 +91,7 @@ export default function CreateModal() {
         description: "",
         assignee: "Jane Smith",
         priority: "Low",
+        status: "Open",
       });
     } catch (error) {
       console.error("Unexpected error while creating ticket:", error);

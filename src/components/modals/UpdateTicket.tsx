@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useModalStore } from "../../store";
 import type { Ticket, TicketFormErrors } from "../../types";
 import { validateTicketForm } from "../../utils";
 
 export default function EditModal() {
-  const { modalState } = useModalStore();
+  const { modalState, updateModal } = useModalStore();
 
   const [title, setTitle] = useState(modalState.data?.title || "");
   const [description, setDescription] = useState(
@@ -14,10 +15,15 @@ export default function EditModal() {
   const [assignee, setAssignee] = useState(
     modalState.data?.assignee || "Jane Smith"
   );
+  const [status, setStatus] = useState(modalState.data?.status || "Open");
   const [priority, setPriority] = useState<"Low" | "Medium" | "High">(
     modalState.data?.priority || "Low"
   );
   const [errors, setErrors] = useState<TicketFormErrors>({});
+  const navigate = useNavigate();
+
+  const closeModal = () =>
+    updateModal({ modalType: "create", status: "close" });
 
   useEffect(() => {
     if (modalState.data) {
@@ -25,6 +31,7 @@ export default function EditModal() {
       setDescription(modalState.data.description);
       setAssignee(modalState.data.assignee);
       setPriority(modalState.data.priority);
+      setStatus(modalState.data.status);
     }
   }, [modalState.data]);
 
@@ -51,6 +58,7 @@ export default function EditModal() {
         description,
         assignee,
         priority,
+        status,
       });
       setErrors(validationErrors);
 
@@ -77,6 +85,7 @@ export default function EditModal() {
               description,
               assignee,
               priority,
+              status,
               lastUpdated: new Date().toISOString(),
             }
           : ticket
@@ -93,6 +102,11 @@ export default function EditModal() {
       localStorage.setItem("tickets", JSON.stringify(updatedTickets));
 
       toast.success("Ticket updated successfully!");
+
+      setTimeout(() => {
+        closeModal();
+        navigate(0);
+      }, 1000);
     } catch (error) {
       console.error("Error updating ticket:", error);
       toast.error("Something went wrong while updating the ticket.");
@@ -103,7 +117,7 @@ export default function EditModal() {
     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
       <div className="modal-header">
         <h2>Edit Ticket</h2>
-        <button className="close-button">
+        <button className="close-button" onClick={closeModal}>
           <span className="icon">close</span>
         </button>
       </div>
@@ -170,8 +184,24 @@ export default function EditModal() {
           </div>
         </div>
 
+        <div className="form-row">
+          <div>
+            <label htmlFor="edit-status">Status</label>
+            <select
+              id="edit-status"
+              value={status}
+              onChange={handleChange(setStatus)}
+            >
+              <option>Open</option>
+              <option>In Progress</option>
+              <option>Closed</option>
+            </select>
+            {errors.status && <p className="error-text">{errors.status}</p>}
+          </div>
+        </div>
+
         <div className="modal-footer">
-          <button type="button" className="btn-secondary">
+          <button type="button" className="btn-secondary" onClick={closeModal}>
             Cancel
           </button>
           <button type="submit" className="btn-primary">

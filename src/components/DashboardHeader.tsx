@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function DashboardHeader() {
   const navigate = useNavigate();
@@ -27,12 +27,28 @@ export default function DashboardHeader() {
           <h2 className="logo-text">TicketFlow</h2>
         </Link>
         <nav className="nav-links">
-          <Link to="/dashboard" className="nav-link">
+          <NavLink
+            to="/dashboard"
+            end
+            className="nav-link"
+            style={({ isActive }) => ({
+              fontWeight: isActive ? "bold" : "normal",
+              color: isActive ? "#13A4EC" : "#333333",
+            })}
+          >
             Overview
-          </Link>
-          <Link to="/dashboard/tickets" className="nav-link">
+          </NavLink>
+          <NavLink
+            to="/dashboard/tickets"
+            end
+            className="nav-link"
+            style={({ isActive }) => ({
+              fontWeight: isActive ? "bold" : "normal",
+              color: isActive ? "#13A4EC" : "#333333",
+            })}
+          >
             Manage Tickets
-          </Link>
+          </NavLink>
         </nav>
         <div className="nav-buttons">
           <button className="btn-primary" onClick={logout}>

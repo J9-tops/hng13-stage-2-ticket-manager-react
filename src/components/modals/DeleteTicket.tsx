@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useModalStore } from "../../store";
 import type { Ticket } from "../../types";
 
 export default function DeleteModal() {
-  const { modalState } = useModalStore();
-
+  const { modalState, updateModal } = useModalStore();
+  const navigate = useNavigate();
+  const closeModal = () =>
+    updateModal({ modalType: "create", status: "close" });
   const deleteTicket = () => {
     try {
       const JSONTickets = localStorage.getItem("tickets");
@@ -28,6 +31,10 @@ export default function DeleteModal() {
 
       localStorage.setItem("tickets", JSON.stringify(updatedTickets));
       toast.success("Ticket deleted successfully!");
+      setTimeout(() => {
+        closeModal();
+        navigate(0);
+      }, 1000);
     } catch (error) {
       console.error("Error deleting ticket:", error);
       toast.error("Something went wrong while deleting the ticket.");
@@ -51,7 +58,9 @@ export default function DeleteModal() {
       </div>
 
       <div className="delete-modal-footer">
-        <button className="btn-secondary">Cancel</button>
+        <button className="btn-secondary" onClick={closeModal}>
+          Cancel
+        </button>
         <button onClick={deleteTicket} className="btn-delete">
           Delete
         </button>

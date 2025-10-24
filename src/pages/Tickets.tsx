@@ -42,7 +42,7 @@ export default function ManageTickets() {
         title: "Feature request: Dark mode",
         description:
           "User is requesting the implementation of a dark mode theme for better usability in low-light conditions.",
-        status: "Resolved",
+        status: "Open",
         assignee: "Alice Johnson",
         priority: "Low",
         date: "Oct 25",
@@ -67,6 +67,10 @@ export default function ManageTickets() {
   }, [sampleTickets]);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [assigneeFilter, setAssigneeFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const openCreateTicket = () =>
     updateModal({ modalType: "create", status: "open" });
@@ -77,11 +81,68 @@ export default function ManageTickets() {
   const openDeleteModal = (ticket: Ticket) =>
     updateModal({ modalType: "delete", status: "open", data: ticket });
 
-  const filteredTickets = tickets.filter(
-    (ticket) =>
-      ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(searchQuery.toLowerCase())
+  const uniqueStatuses = useMemo(
+    () => [...new Set(tickets.map((t) => t.status))],
+    [tickets]
   );
+  const uniqueAssignees = useMemo(
+    () => [...new Set(tickets.map((t) => t.assignee))],
+    [tickets]
+  );
+  const uniquePriorities = useMemo(
+    () => [...new Set(tickets.map((t) => t.priority))],
+    [tickets]
+  );
+
+  const toggleFilter = (filterType: string, value: string) => {
+    if (filterType === "status") {
+      setStatusFilter((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value]
+      );
+    } else if (filterType === "assignee") {
+      setAssigneeFilter((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value]
+      );
+    } else if (filterType === "priority") {
+      setPriorityFilter((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value]
+      );
+    }
+  };
+
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch =
+      ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      statusFilter.length === 0 || statusFilter.includes(ticket.status);
+    const matchesAssignee =
+      assigneeFilter.length === 0 || assigneeFilter.includes(ticket.assignee);
+    const matchesPriority =
+      priorityFilter.length === 0 || priorityFilter.includes(ticket.priority);
+
+    return matchesSearch && matchesStatus && matchesAssignee && matchesPriority;
+  });
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest(".filter-dropdown")) {
+        setOpenDropdown(null);
+      }
+    };
+
+    if (openDropdown) {
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }
+  }, [openDropdown]);
 
   return (
     <div className="app-container">
@@ -111,18 +172,95 @@ export default function ManageTickets() {
             />
           </div>
           <div className="filter-buttons">
-            <button className="filter-btn">
-              <span>Status</span>
-              <span className="icon">expand_more</span>
-            </button>
-            <button className="filter-btn">
-              <span>Assignee</span>
-              <span className="icon">expand_more</span>
-            </button>
-            <button className="filter-btn">
-              <span>Priority</span>
-              <span className="icon">expand_more</span>
-            </button>
+            <div className="filter-dropdown">
+              <button
+                className="filter-btn"
+                onClick={() =>
+                  setOpenDropdown(openDropdown === "status" ? null : "status")
+                }
+              >
+                <span>
+                  Status {statusFilter.length > 0 && `(${statusFilter.length})`}
+                </span>
+                <span className="icon">expand_more</span>
+              </button>
+              {openDropdown === "status" && (
+                <div className="dropdown-menu">
+                  {uniqueStatuses.map((status) => (
+                    <label key={status} className="dropdown-item">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes(status)}
+                        onChange={() => toggleFilter("status", status)}
+                      />
+                      <span>{status}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="filter-dropdown">
+              <button
+                className="filter-btn"
+                onClick={() =>
+                  setOpenDropdown(
+                    openDropdown === "assignee" ? null : "assignee"
+                  )
+                }
+              >
+                <span>
+                  Assignee{" "}
+                  {assigneeFilter.length > 0 && `(${assigneeFilter.length})`}
+                </span>
+                <span className="icon">expand_more</span>
+              </button>
+              {openDropdown === "assignee" && (
+                <div className="dropdown-menu">
+                  {uniqueAssignees.map((assignee) => (
+                    <label key={assignee} className="dropdown-item">
+                      <input
+                        type="checkbox"
+                        checked={assigneeFilter.includes(assignee)}
+                        onChange={() => toggleFilter("assignee", assignee)}
+                      />
+                      <span>{assignee}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="filter-dropdown">
+              <button
+                className="filter-btn"
+                onClick={() =>
+                  setOpenDropdown(
+                    openDropdown === "priority" ? null : "priority"
+                  )
+                }
+              >
+                <span>
+                  Priority{" "}
+                  {priorityFilter.length > 0 && `(${priorityFilter.length})`}
+                </span>
+                <span className="icon">expand_more</span>
+              </button>
+              {openDropdown === "priority" && (
+                <div className="dropdown-menu">
+                  {uniquePriorities.map((priority) => (
+                    <label key={priority} className="dropdown-item">
+                      <input
+                        type="checkbox"
+                        checked={priorityFilter.includes(priority)}
+                        onChange={() => toggleFilter("priority", priority)}
+                      />
+                      <span>{priority}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

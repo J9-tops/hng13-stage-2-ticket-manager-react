@@ -38,26 +38,26 @@ export const getAvatarForAssignee = (assignee: string) => {
 export function validateTicketForm(formData: TicketFormData): TicketFormErrors {
   const errors: TicketFormErrors = {};
 
-  // Title validation
   if (!formData.title.trim()) {
     errors.title = "Title is required.";
   } else if (formData.title.trim().length < 3) {
     errors.title = "Title must be at least 3 characters long.";
   }
 
-  // Description validation (optional, but must have some text if filled)
   if (formData.description && formData.description.trim().length < 5) {
     errors.description = "Description must be at least 5 characters long.";
   }
 
-  // Assignee validation
   if (!formData.assignee.trim()) {
     errors.assignee = "Please select an assignee.";
   }
 
-  // Priority validation
   if (!["Low", "Medium", "High"].includes(formData.priority)) {
     errors.priority = "Invalid priority selected.";
+  }
+
+  if (!["Open", "In Progress", "Closed"].includes(formData.status)) {
+    errors.status = "Invalid status selected.";
   }
 
   return errors;

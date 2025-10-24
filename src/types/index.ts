@@ -13,7 +13,7 @@ export interface Ticket {
   uniqueNo: string;
   title: string;
   description: string;
-  status: "Open" | "In Progress" | "Resolved";
+  status: "Open" | "In Progress" | "Closed";
   assignee: string;
   priority: "Low" | "Medium" | "High";
   date: string;
@@ -26,6 +26,7 @@ export interface TicketFormErrors {
   description?: string;
   assignee?: string;
   priority?: string;
+  status?: string;
 }
 
 export interface TicketFormData {
@@ -33,4 +34,5 @@ export interface TicketFormData {
   description: string;
   assignee: string;
   priority: "Low" | "Medium" | "High";
+  status: "Open" | "In Progress" | "Closed";
 }
