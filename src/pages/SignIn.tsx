@@ -17,7 +17,7 @@ export default function SignIn() {
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
-  const currentUser = localStorage.getItem("current_user");
+  const currentUser = localStorage.getItem("ticketapp_session");
   if (currentUser) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -72,7 +72,7 @@ export default function SignIn() {
       );
 
       if (user) {
-        localStorage.setItem("current_user", JSON.stringify(user));
+        localStorage.setItem("ticketapp_session", JSON.stringify(user));
         toast.success("Signing in successful, Redirecting...");
         setTimeout(() => {
           navigate("/dashboard");

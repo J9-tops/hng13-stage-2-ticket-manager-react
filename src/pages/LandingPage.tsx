@@ -1,8 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/shared/Footer";
 import Header from "../components/shared/Header";
 
 const LandingPage = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const userJSON = localStorage.getItem("current_user");
+    if (userJSON) {
+      try {
+        setCurrentUser(JSON.parse(userJSON));
+      } catch (e) {
+        console.error("Error parsing user data:", e);
+      }
+    }
+  }, []);
   return (
     <div className="app">
       <div className="page-wrapper">
@@ -45,18 +57,19 @@ const LandingPage = () => {
                   Effortless Ticket Management for Modern Teams
                 </h1>
                 <p className="hero-subtitle">
-                  Streamline your support with our intuitive and powerful ticket
-                  management system, designed to help you focus on what matters
-                  most: your customers.
+                  Track, organize, and resolve customer requests
+                  effortlessly—your ultimate tool for seamless support.
                 </p>
-                <div className="hero-buttons">
-                  <Link to="/sign-up" className="btn btn-primary">
-                    <span>Get Started</span>
-                  </Link>
-                  <Link to="/sign-in" className="btn btn-secondary">
-                    <span>Login</span>
-                  </Link>
-                </div>
+                {!currentUser && (
+                  <div className="hero-buttons">
+                    <Link to="/sign-up" className="btn btn-primary">
+                      <span>Get Started</span>
+                    </Link>
+                    <Link to="/sign-in" className="btn btn-secondary">
+                      <span>Login</span>
+                    </Link>
+                  </div>
+                )}
               </div>
             </section>
 

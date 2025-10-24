@@ -64,9 +64,11 @@ export default function CreateModal() {
         ...formData,
         status: "Open",
         date: new Date().toISOString(),
-        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-          formData.assignee
-        )}`,
+        avatar: formData.assignee
+          ? `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+              formData.assignee
+            )}`
+          : "",
         lastUpdated: new Date().toISOString(),
       };
 

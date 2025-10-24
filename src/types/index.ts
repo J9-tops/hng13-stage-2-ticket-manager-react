@@ -31,8 +31,8 @@ export interface TicketFormErrors {
 
 export interface TicketFormData {
   title: string;
-  description: string;
-  assignee: string;
-  priority: "Low" | "Medium" | "High";
+  description?: string;
+  assignee?: string;
+  priority?: "Low" | "Medium" | "High";
   status: "Open" | "In Progress" | "Closed";
 }

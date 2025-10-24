@@ -17,7 +17,7 @@ export default function SignUp() {
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
-  const currentUser = localStorage.getItem("current_user");
+  const currentUser = localStorage.getItem("ticketapp_session");
   if (currentUser) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -79,7 +79,7 @@ export default function SignUp() {
       users.push(formData);
       localStorage.setItem("users", JSON.stringify(users));
 
-      localStorage.setItem("current_user", JSON.stringify(formData));
+      localStorage.setItem("ticketapp_session", JSON.stringify(formData));
 
       toast.success("Account Created Successfully");
       setTimeout(() => {

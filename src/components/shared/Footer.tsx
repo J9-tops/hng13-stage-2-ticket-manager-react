@@ -22,7 +22,7 @@ export default function Footer() {
               <h2 className="footer-logo-text">TicketFlow</h2>
             </div>
             <p className="footer-copyright">
-              © 2023 TicketFlow. All rights reserved.
+              © {new Date().getFullYear()} TicketFlow. All rights reserved.
             </p>
           </div>
           <div className="footer-links">

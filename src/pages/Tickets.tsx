@@ -119,7 +119,7 @@ export default function ManageTickets() {
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch =
       ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(searchQuery.toLowerCase());
+      ticket.uniqueNo.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus =
       statusFilter.length === 0 || statusFilter.includes(ticket.status);

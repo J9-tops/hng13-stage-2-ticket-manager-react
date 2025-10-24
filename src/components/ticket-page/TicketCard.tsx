@@ -58,7 +58,12 @@ export default function TicketCard({ ticket, onEdit, onDelete }: Props) {
           <span className={`priority ${getPriorityClass(ticket.priority)}`}>
             {ticket.priority}
           </span>
-          <span className="date">{ticket.date}</span>
+          <span className="date">
+            {new Date(ticket.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}{" "}
+          </span>
         </div>
       </div>
       <div className="ticket-actions">
