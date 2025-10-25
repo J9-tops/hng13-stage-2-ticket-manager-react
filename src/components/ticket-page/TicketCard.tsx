@@ -13,8 +13,8 @@ export default function TicketCard({ ticket, onEdit, onDelete }: Props) {
         return "status-open";
       case "In Progress":
         return "status-progress";
-      case "Resolved":
-        return "status-resolved";
+      case "Closed":
+        return "status-closed";
       default:
         return "";
     }

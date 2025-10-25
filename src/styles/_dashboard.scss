@@ -406,18 +406,18 @@
   }
 
   .status-open {
-    background-color: rgba(245, 166, 35, 0.2);
-    color: $warning;
-  }
-
-  .status-resolved {
-    background-color: rgba(126, 211, 33, 0.2);
-    color: $success;
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
   }
 
   .status-progress {
-    background-color: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+  }
+
+  .status-closed {
+    background-color: rgba(156, 163, 175, 0.2);
+    color: #6b7280;
   }
 
   .dark .status-progress {

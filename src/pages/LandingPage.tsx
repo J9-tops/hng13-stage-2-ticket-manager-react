@@ -136,7 +136,7 @@ const LandingPage = () => {
                     Join thousands of teams already using TicketFlow to deliver
                     amazing support experiences.
                   </p>
-                  <Link to="/sign-in" className="btn btn-large">
+                  <Link to="/sign-up" className="btn btn-large">
                     Get Started Free
                   </Link>
                 </div>

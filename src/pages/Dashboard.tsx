@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
 
             <div className="stat-card">
               <div className="stat-header">
-                <p className="stat-label">Closed Tickets</p>
+                <p className="stat-label">Resolved Tickets</p>
                 <span className="stat-icon stat-success">✓</span>
               </div>
               <p className="stat-value stat-success">{stats.closed}</p>
