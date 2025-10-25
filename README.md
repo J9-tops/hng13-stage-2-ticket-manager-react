@@ -94,7 +94,7 @@ Validation examples implemented in code:
 - Routes are defined in `src/routes.tsx`.
 - `ProtectedRoute` component (wraps routes that require authentication) is at `src/components/shared/ProtectedRoute.tsx`.
 
-Important: `ProtectedRoute.tsx` currently checks `localStorage.getItem('current_user')` which does not match the actual session key `ticketapp_session` used by SignIn/SignUp. Update `ProtectedRoute` to use `ticketapp_session` to ensure pages are protected correctly.
+Important: `ProtectedRoute.tsx` currently checks `localStorage.getItem('ticketapp_session')` which does not match the actual session key `ticketapp_session` used by SignIn/SignUp. Update `ProtectedRoute` to use `ticketapp_session` to ensure pages are protected correctly.
 
 ## Files & key components
 
