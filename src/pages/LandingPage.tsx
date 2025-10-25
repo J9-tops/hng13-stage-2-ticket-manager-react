@@ -6,7 +6,7 @@ import Header from "../components/shared/Header";
 const LandingPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
-    const userJSON = localStorage.getItem("current_user");
+    const userJSON = localStorage.getItem("ticketapp_session");
     if (userJSON) {
       try {
         setCurrentUser(JSON.parse(userJSON));
