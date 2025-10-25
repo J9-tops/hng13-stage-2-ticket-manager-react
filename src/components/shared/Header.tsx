@@ -9,7 +9,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userJSON = localStorage.getItem("current_user");
+    const userJSON = localStorage.getItem("ticketapp_session");
     if (userJSON) {
       try {
         setCurrentUser(JSON.parse(userJSON));
@@ -23,7 +23,7 @@ export default function Header() {
   const closeSidebar = () => setIsSidebarOpen(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("current_user");
+    localStorage.removeItem("ticketapp_session");
     setCurrentUser(null);
     toast.success("Logged out successfully");
     closeSidebar();
