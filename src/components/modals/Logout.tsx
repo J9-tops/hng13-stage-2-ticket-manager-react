@@ -14,6 +14,7 @@ export default function LogoutModal() {
   const logout = () => {
     localStorage.removeItem("ticketapp_session");
     navigate("/sign-in");
+    closeLogoutModal();
   };
 
   return (
