@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import TicketCard from "../components/ticket-page/TicketCard";
 import { useModalStore } from "../store";
 import type { Ticket } from "../types";
@@ -143,6 +143,10 @@ export default function ManageTickets() {
       return () => document.removeEventListener("click", handleClickOutside);
     }
   }, [openDropdown]);
+
+  useLayoutEffect(() => {
+    document.title = "TicketFlow | Manage Tickets";
+  }, []);
 
   return (
     <div className="app-container tickets">

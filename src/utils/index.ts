@@ -48,15 +48,15 @@ export function validateTicketForm(formData: TicketFormData): TicketFormErrors {
     errors.description = "Description must be at least 5 characters long.";
   }
 
-  if (!formData.assignee.trim()) {
+  if (!formData?.assignee?.trim()) {
     errors.assignee = "Please select an assignee.";
   }
 
-  if (!["Low", "Medium", "High"].includes(formData.priority)) {
+  if (!["Low", "Medium", "High"].includes(formData?.priority ?? "")) {
     errors.priority = "Invalid priority selected.";
   }
 
-  if (!["Open", "In Progress", "Closed"].includes(formData.status)) {
+  if (!["Open", "In Progress", "Closed"].includes(formData?.status ?? "")) {
     errors.status = "Invalid status selected.";
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useModalStore } from "../store";
 import type { Ticket } from "../types";
 
@@ -40,7 +40,10 @@ const Dashboard: React.FC = () => {
     };
   }, []);
 
-  // Calculate statistics
+  useLayoutEffect(() => {
+    document.title = "TicketFlow | Dashboard";
+  }, []);
+
   const stats = useMemo(() => {
     const total = tickets.length;
     const open = tickets.filter((t) => t.status === "Open").length;
@@ -49,7 +52,6 @@ const Dashboard: React.FC = () => {
     return { total, open, closed };
   }, [tickets]);
 
-  // Get recent tickets (last 4, sorted by lastUpdated)
   const recentTickets = useMemo(() => {
     return [...tickets]
       .sort((a, b) => {
@@ -60,7 +62,6 @@ const Dashboard: React.FC = () => {
       .slice(0, 4);
   }, [tickets]);
 
-  // Format relative time
   const getRelativeTime = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
