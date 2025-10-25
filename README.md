@@ -1,73 +1,115 @@
-# React + TypeScript + Vite
+# Ticket Manager — React implementation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the React + TypeScript + Vite implementation of the Ticket Manager challenge. The full challenge asks for three separate frontend implementations (React, Vue.js, and Twig) that share the same layout, design language and behavior. This repo currently contains the React implementation only.
 
-Currently, two official plugins are available:
+This README explains what is implemented, how to run the app, where key UI pieces live, validation & auth details, accessibility notes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Quick overview
 
-## React Compiler
+- Framework: React 19 + TypeScript
+- Bundler: Vite
+- UI/utility libraries: `lucide-react` (icons), `sonner` (toasts), `zustand` (lightweight store)
+- CSS: SCSS files under `src/styles`
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Project scripts (from `package.json`): `dev` (vite), `build`, `preview`, `lint`.
 
-## Expanding the ESLint configuration
+### What this implementation includes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Landing page with hero, CTA links, and responsive layout (see `src/pages/LandingPage.tsx` and styles in `src/styles`).
+- Authentication screens: Sign In and Sign Up with client-side validation and toasts (`src/pages/SignIn.tsx`, `src/pages/SignUp.tsx`).
+- Dashboard overview with cards for ticket stats and navigation to Tickets screen (`src/pages/Dashboard.tsx` and `src/components/shared/DashboardLayout.tsx`).
+- Ticket management screen (list of ticket cards, create/update/delete flows) with modal components in `src/components/modals/` and ticket card UI in `src/components/ticket-page/TicketCard.tsx`.
+- Global modal state using `zustand` (`src/store.ts`).
+- Routing: `src/routes.tsx` and a protected route component in `src/components/shared/ProtectedRoute.tsx`.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## How to run (local)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+This project uses pnpm (a lockfile is present). You can use npm or yarn too, but the commands below assume pnpm. Run these in PowerShell (Windows):
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+pnpm install
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Build for production:
+
+```powershell
+pnpm build
+pnpm preview
+```
+
+If you prefer npm:
+
+```powershell
+npm install
+npm run dev
+```
+
+## Authentication & session
+
+- Session storage key used by this React app: `ticketapp_session` (saved in `localStorage`).
+- Sign Up stores a `users` array in `localStorage` and sets `ticketapp_session` to the newly created user object. Sign In checks `users` for matching credentials and sets `ticketapp_session` on success.
+- Protected routes should be accessed only when `ticketapp_session` exists.
+
+Logout: clear `ticketapp_session` and redirect to the landing page. The Logout modal component exists in `src/components/modals/Logout.tsx`.
+
+Example test credentials (for local testing):
+
+- Create a new account via Sign Up with:
+  - Email: test@example.com
+  - Password: password123
+
+Or pre-populate `localStorage` manually in the browser console:
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+localStorage.setItem(
+  "users",
+  JSON.stringify([{ email: "test@example.com", password: "password123" }])
+);
 ```
+
+Then sign in with the same credentials.
+
+## Validation & business rules
+
+Per the challenge instructions the app must enforce:
+
+- Required fields: `title` and `status` on tickets.
+- Allowed status values (challenge spec): `open`, `in_progress`, `closed` (lowercase, underscore for in_progress).
+- UI color mapping (status → color):
+
+  - `open` → green tone
+  - `in_progress` → amber tone
+  - `closed` → gray tone
+
+- Form fields across Sign In / Sign Up and Ticket forms include inline field validation and show errors beneath inputs. Toasts (via `sonner`) provide global success/error feedback.
+
+Validation examples implemented in code:
+
+- Sign In / Sign Up: email format check and minimum password length (6) — see `src/pages/SignIn.tsx` and `src/pages/SignUp.tsx`.
+- Ticket forms: real-time validation is implemented in the ticket modal components (see `src/components/modals/UpdateTicket.tsx` and `CreateTicket.tsx`).
+
+## Routing & protected pages
+
+- Routes are defined in `src/routes.tsx`.
+- `ProtectedRoute` component (wraps routes that require authentication) is at `src/components/shared/ProtectedRoute.tsx`.
+
+Important: `ProtectedRoute.tsx` currently checks `localStorage.getItem('current_user')` which does not match the actual session key `ticketapp_session` used by SignIn/SignUp. Update `ProtectedRoute` to use `ticketapp_session` to ensure pages are protected correctly.
+
+## Files & key components
+
+- `src/pages/LandingPage.tsx` — hero section, CTAs, landing layout.
+- `src/pages/SignIn.tsx`, `src/pages/SignUp.tsx` — authentication forms with validation and toasts.
+- `src/pages/Dashboard.tsx` — dashboard cards and stats.
+- `src/pages/Tickets.tsx` — ticket management screen.
+- `src/components/modals/` — modal components for Create, Update, Delete, Logout flows.
+- `src/components/ticket-page/TicketCard.tsx` — ticket card UI and status tag.
+- `src/store.ts` — `zustand` modal state (open/close + modal type).
+- `src/styles/` — SCSS files that implement the site design (hero wave, circles, box-cards, max-width container rules, responsive breakpoints).
+
+## Design & accessibility notes
+
+- Layout rule: content should be centered with a max-width of 1440px (the stylesheet enforces a container width rule in `src/styles/index.scss`).
+- Hero section: the layout supports a wavy bottom edge (implemented with SVG/CSS in the landing page styles).
+- Decorative elements: the styles include circular decorations and card boxes. You can find related rules in `src/styles/_landing-page.scss` and `_dashboard.scss`.
+- Accessibility: the app is built with semantic HTML elements, includes alt text where applicable, provides visible focus styles in CSS and aims for sufficient contrast. Manual accessibility testing and automated linting (axe or similar) are recommended for full compliance.
