@@ -152,9 +152,13 @@ const Dashboard: React.FC = () => {
                   <tbody>
                     {recentTickets.map((ticket) => (
                       <tr key={ticket.id}>
-                        <td className="ticket-id">{ticket.uniqueNo}</td>
-                        <td className="ticket-subject">{ticket.title}</td>
-                        <td>
+                        <td data-label="Ticket ID" className="ticket-id">
+                          {ticket.uniqueNo}
+                        </td>
+                        <td data-label="Subject" className="ticket-subject">
+                          <p>{ticket.title}</p>
+                        </td>
+                        <td data-label="Status">
                           <span
                             className={`status-badge ${getStatusClass(
                               ticket.status
@@ -163,10 +167,13 @@ const Dashboard: React.FC = () => {
                             {ticket.status}
                           </span>
                         </td>
-                        <td className="ticket-subject">
+                        <td
+                          data-label="Last Updated"
+                          className="ticket-subject"
+                        >
                           {getRelativeTime(ticket.lastUpdated)}
                         </td>
-                        <td style={{ textAlign: "right" }}>
+                        <td data-label="Action" style={{ textAlign: "right" }}>
                           <a className="view-link" href="#">
                             View
                           </a>

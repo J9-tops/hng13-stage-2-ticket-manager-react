@@ -579,6 +579,12 @@
     margin: 0 auto;
   }
 
+  @media (max-width: 540px) {
+    .btn-large {
+      font-size: 1rem;
+    }
+  }
+
   .btn-large:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
