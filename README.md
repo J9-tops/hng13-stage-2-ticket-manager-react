@@ -1,6 +1,6 @@
 # Ticket Manager — React implementation
 
-This repository contains the React + TypeScript + Vite implementation of the Ticket Manager challenge. The full challenge asks for three separate frontend implementations (React, Vue.js, and Twig) that share the same layout, design language and behavior. This repo currently contains the React implementation only.
+This repository contains the React + TypeScript + Vite implementation of the Ticket Manager challenge. The full challenge asks for three separate frontend implementations (React, Vue.js, and Twig) that share the same layout, design language and behavior. This repo currently contains the React implementation only. To see the Vue implementation https://ticketflow-vue.netlify.app/ and Twig implementation https://hng13-stage-2-ticket-manager-twig-production.up.railway.app/
 
 This README explains what is implemented, how to run the app, where key UI pieces live, validation & auth details, accessibility notes.
 
