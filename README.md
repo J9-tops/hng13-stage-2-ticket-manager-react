@@ -45,6 +45,10 @@ npm install
 npm run dev
 ```
 
+Then visit `http://localhost:8080` in your browser.
+
+Accessing `http://localhost:8080/dashboard/tickets` first generates sample tickets.
+
 ## Authentication & session
 
 - Session storage key used by this React app: `ticketapp_session` (saved in `localStorage`).
@@ -106,10 +110,3 @@ Important: `ProtectedRoute.tsx` currently checks `localStorage.getItem('ticketap
 - `src/components/ticket-page/TicketCard.tsx` — ticket card UI and status tag.
 - `src/store.ts` — `zustand` modal state (open/close + modal type).
 - `src/styles/` — SCSS files that implement the site design (hero wave, circles, box-cards, max-width container rules, responsive breakpoints).
-
-## Design & accessibility notes
-
-- Layout rule: content should be centered with a max-width of 1440px (the stylesheet enforces a container width rule in `src/styles/index.scss`).
-- Hero section: the layout supports a wavy bottom edge (implemented with SVG/CSS in the landing page styles).
-- Decorative elements: the styles include circular decorations and card boxes. You can find related rules in `src/styles/_landing-page.scss` and `_dashboard.scss`.
-- Accessibility: the app is built with semantic HTML elements, includes alt text where applicable, provides visible focus styles in CSS and aims for sufficient contrast. Manual accessibility testing and automated linting (axe or similar) are recommended for full compliance.
