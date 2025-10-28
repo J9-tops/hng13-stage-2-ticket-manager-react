@@ -63,10 +63,10 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link to="/sign-in" className="btn btn-login">
+                <Link to="/auth/login" className="btn btn-login">
                   <span>Login</span>
                 </Link>
-                <Link to="/sign-up" className="btn btn-get-started">
+                <Link to="/auth/signup" className="btn btn-get-started">
                   <span>Get Started</span>
                 </Link>
               </>
@@ -141,14 +141,14 @@ export default function Header() {
             ) : (
               <>
                 <Link
-                  to="/sign-in"
+                  to="/auth/login"
                   className="sidebar-link"
                   onClick={closeSidebar}
                 >
                   <span>Login</span>
                 </Link>
                 <Link
-                  to="/sign-up"
+                  to="/auth/signup"
                   className="sidebar-link primary"
                   onClick={closeSidebar}
                 >

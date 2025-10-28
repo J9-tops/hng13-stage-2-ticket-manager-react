@@ -30,7 +30,7 @@ const LandingPage = () => {
                   preserveAspectRatio="none"
                 >
                   <path
-                    fill="#E2E8F0"
+                    fill="#D0EDFB"
                     fillOpacity="0.4"
                     d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,128C672,128,768,160,864,165.3C960,171,1056,149,1152,128C1248,107,1344,85,1392,74.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
                   ></path>
@@ -41,7 +41,7 @@ const LandingPage = () => {
                   preserveAspectRatio="none"
                 >
                   <path
-                    fill="#E2E8F0"
+                    fill="#D0EDFB"
                     fillOpacity="0.3"
                     d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,208C960,192,1056,160,1152,154.7C1248,149,1344,171,1392,181.3L1440,192L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
                   ></path>
@@ -62,10 +62,10 @@ const LandingPage = () => {
                 </p>
                 {!currentUser && (
                   <div className="hero-buttons">
-                    <Link to="/sign-up" className="btn btn-primary">
+                    <Link to="/auth/signup" className="btn btn-primary">
                       <span>Get Started</span>
                     </Link>
-                    <Link to="/sign-in" className="btn btn-secondary">
+                    <Link to="/auth/login" className="btn btn-secondary">
                       <span>Login</span>
                     </Link>
                   </div>
@@ -120,8 +120,7 @@ const LandingPage = () => {
                     <h3 className="feature-title">Powerful Analytics</h3>
                     <p className="feature-description">
                       Gain valuable insights into your support performance with
-                      our detailed analytics. Track key metrics and improve your
-                      service.
+                      our detailed analytics.
                     </p>
                   </div>
                 </div>
@@ -136,7 +135,7 @@ const LandingPage = () => {
                     Join thousands of teams already using TicketFlow to deliver
                     amazing support experiences.
                   </p>
-                  <Link to="/sign-up" className="btn btn-large">
+                  <Link to="/auth/signup" className="btn btn-large">
                     Get Started Free
                   </Link>
                 </div>

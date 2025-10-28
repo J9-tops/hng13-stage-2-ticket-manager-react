@@ -166,7 +166,7 @@ export default function SignUp() {
 
             <p className="footer-text">
               Already have an account?
-              <Link to="/sign-in" className="footer-link">
+              <Link to="/auth/login" className="footer-link">
                 Sign In
               </Link>
             </p>

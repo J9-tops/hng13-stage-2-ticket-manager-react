@@ -19,11 +19,11 @@ export const routes: RouteObject[] = [
         element: <LandingPage />,
       },
       {
-        path: "sign-in",
+        path: "auth/login",
         element: <SignIn />,
       },
       {
-        path: "sign-up",
+        path: "auth/signup",
         element: <SignUp />,
       },
       {
